@@ -85,6 +85,7 @@ let send_message = (channel_id, message) => {
 	return fetch(base + `/channels/${channel_id}/messages`, {method: "POST", headers: {"Authorization": "Bot " + token, "User-Agent": "DiscordBot (test.org, 1.0)", "Content-Type": "application/json"}, body: JSON.stringify({content: message})}).then((v)=>v.json());
 }
 
+let andy_grace_period = performance.now() - 600000;
 var handle_event = (json) => {
 	switch(json.t){
 		case "MESSAGE_CREATE":
@@ -92,10 +93,19 @@ var handle_event = (json) => {
 				return;
 
 			
-			console.log(json.d.author.global_name, json.d.content);
+			let message = json.d.content;
+			if(message == "!srs") // initiates serious andy time
+				andy_grace_period = performance.now();
+
+			let minutes_since = (performance.now() - andy_grace_period) / 60000;
+			let time_left = Math.max(0.0, 10 - minutes_since);
+
+			if(message == "!stl") // serious time left
+				send_message(json.d.channel_id, `${time_left} minutes`);
 			
-			if(json.d.author.id == "669917688981618708" && Math.random() > 0.90)
+			if(time_left == 0.0 && json.d.author.id == "669917688981618708" && Math.random() > 0.90)
 				send_message(json.d.channel_id, "shutup");
+
 
 		break;
 	}
