@@ -7,12 +7,10 @@ const dave = new Client({ intents: [
     GatewayIntentBits.MessageContent
 ]});
 
-const specificUsername = 'adberns';
-
 const responses = [
     "shutup",
     "peeps are garbage",
-    "the bears suck",
+    "the chicago bears suck",
     "be quiet",
     "leave....",
     "Did you sleep in again...?",
@@ -32,7 +30,7 @@ dave.on(Events.MessageCreate, message => {
         message.content,
     );
 
-    if (message.author.username === specificUsername && Math.random() < 0.40) {
+    if (Math.random() < 0.05) {
         const randomResponse = responses[Math.floor(Math.random() * responses.length)];
         message.channel.send(randomResponse);
     }
