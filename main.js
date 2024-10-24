@@ -20,6 +20,13 @@ const responses = [
     "Will this guy ever be quiet?"
 ];
 
+const manual_responses = [
+    "!! whoa you drive a manual 😳 Thats so cool",
+    "manual?? you mean like the og way to drive a vehicle?",
+    "you are almost as cool as andy!",
+    "ikr, automatic transmissions are so boring!"
+];
+
 dave.once(Events.ClientReady, readyClient => {
     console.log(`Ready! Logged in as ${readyClient.user.tag}`);
 });
@@ -29,6 +36,11 @@ dave.on(Events.MessageCreate, message => {
         message.author.displayName,
         message.content,
     );
+    
+    if(message.content.match(/manual/i) && Math.random() < 0.75){
+        const randomResponse = manual_responses[Math.floor(Math.random() * manual_responses.length)];
+        message.channel.send(randomResponse);
+    }
 
     if (Math.random() < 0.05) {
         const randomResponse = responses[Math.floor(Math.random() * responses.length)];
