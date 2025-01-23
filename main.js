@@ -40,7 +40,7 @@ const women_responses = [
     "You're fired!",
     "Tenure removed...",
     "Make Dave Great Again",
-    "Will this person ever be quiet?"
+    "Will this woman ever be quiet?"
 ];
 
 const men_responses = [
