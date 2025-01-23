@@ -79,12 +79,12 @@ dave.on(Events.MessageCreate, message => {
         message.content,
     );
 
-    var normal_thresh = normal_man_thresh;
-    var manual_thresh = manual_man_thresh;
+    let normal_thresh = normal_man_thresh;
+    let manual_thresh = manual_man_thresh;
 
-    var responses = men_responses;
+    let responses = men_responses;
 
-    if (!(message.author.username in men || message.author.username in not_men)) {
+    if (!(men.includes(message.author.username) || not_men.includes(message.author.username))) {
 
         decision = Math.random();
         if (decision > 0.7) {
