@@ -1,4 +1,4 @@
-const { Client, Events, GatewayIntentBits } = require("discord.js");
+const { Client, Events, GatewayIntentBits, ChannelType } = require("discord.js");
 const { token } = require("./config.json");
 
 const dave = new Client({ intents: [
@@ -72,6 +72,11 @@ dave.once(Events.ClientReady, readyClient => {
 });
 
 dave.on(Events.MessageCreate, message => {
+    // Don't allow dave to respond to himself!
+    if(message.author.id === dave.user.id) return;
+    // Don't allow responses in anything besides normal text channel
+    if(message.channel.type !== ChannelType.GuildText) return;
+
     console.log(
         message.author.displayName,
         message.content,
@@ -102,11 +107,13 @@ dave.on(Events.MessageCreate, message => {
     if(message.content.match(/manual/i) && Math.random() < manual_thresh){
         const randomResponse = manual_responses[Math.floor(Math.random() * manual_responses.length)];
         message.channel.send(randomResponse);
+        return;
     }
 
     if (Math.random() < normal_thresh) {
         const randomResponse = responses[Math.floor(Math.random() * responses.length)];
         message.channel.send(randomResponse);
+        return;
     }
 });
 
