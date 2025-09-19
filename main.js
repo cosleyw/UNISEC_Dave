@@ -10,6 +10,8 @@ const dave = new Client({ intents: [
 const manual_thresh = 0.75;
 const normal_thresh = 0.05;
 
+const new_member_ignore_days = 14;
+
 const responses = [
     "shutup",
     "peeps are garbage",
@@ -40,7 +42,17 @@ dave.on(Events.MessageCreate, message => {
     // Don't allow responses in anything besides normal text channel
     if(message.channel.type !== ChannelType.GuildText) return;
 
+    const member = message.member;
+    if(member === null) return;
+
+    const timeDeltaMS = Date.now() - member.joinedAt;
+    const timeDeltaDays = Math.floor(timeDeltaMS / (1000 * 60 * 60 * 24));
+
+    // Ignore new members for a few days
+    if(timeDeltaDays < new_member_ignore_days) return;
+
     console.log(
+        timeDeltaDays,
         message.author.displayName,
         message.content,
     );
