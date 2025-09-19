@@ -7,7 +7,7 @@ const dave = new Client({ intents: [
     GatewayIntentBits.MessageContent
 ]});
 
-const manual_thresh = 0.75;
+const manual_thresh = 0.50;
 const normal_thresh = 0.05;
 
 const new_member_ignore_days = 14;
