@@ -1,11 +1,13 @@
 const { Client, Events, GatewayIntentBits, ChannelType } = require("discord.js");
 const { token } = require("./config.json");
 
-const dave = new Client({ intents: [
-    GatewayIntentBits.Guilds,
-    GatewayIntentBits.GuildMessages,
-    GatewayIntentBits.MessageContent
-]});
+const dave = new Client({
+    intents: [
+        GatewayIntentBits.Guilds,
+        GatewayIntentBits.GuildMessages,
+        GatewayIntentBits.MessageContent
+    ]
+});
 
 const manual_thresh = 0.50;
 const normal_thresh = 0.05;
@@ -38,18 +40,18 @@ dave.once(Events.ClientReady, readyClient => {
 
 dave.on(Events.MessageCreate, message => {
     // Don't allow dave to respond to himself!
-    if(message.author.id === dave.user.id) return;
-    // Don't allow responses in anything besides normal text channel
-    if(message.channel.type !== ChannelType.GuildText) return;
+    if (message.author.id === dave.user.id) return;
+    // Don't allow responses in anything besides general channel
+    if (message.channel.id !== 941723585200930829) return;
 
     const member = message.member;
-    if(member === null) return;
+    if (member === null) return;
 
     const timeDeltaMS = Date.now() - member.joinedAt;
     const timeDeltaDays = Math.floor(timeDeltaMS / (1000 * 60 * 60 * 24));
 
     // Ignore new members for a few days
-    if(timeDeltaDays < new_member_ignore_days) return;
+    if (timeDeltaDays < new_member_ignore_days) return;
 
     console.log(
         timeDeltaDays,
@@ -57,7 +59,7 @@ dave.on(Events.MessageCreate, message => {
         message.content,
     );
 
-    if(message.content.match(/manual/i) && Math.random() < manual_thresh){
+    if (message.content.match(/manual/i) && Math.random() < manual_thresh) {
         const randomResponse = manual_responses[Math.floor(Math.random() * manual_responses.length)];
         message.channel.send(randomResponse);
         return;
